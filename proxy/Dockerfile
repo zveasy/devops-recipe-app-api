@@ -11,14 +11,20 @@ ENV APP_PORT=9000
 
 USER root
 
-RUN mkdir -p /vol/static && \
-    chmod 755 /vol/static && \
+RUN mkdir -p /vol/web/static /vol/web/media && \
+    chmod 755 /vol/web && \
+    chown -R nginx:nginx /vol/web && \
+    mkdir -p /etc/nginx/conf.d && \
     touch /etc/nginx/conf.d/default.conf && \
     chown nginx:nginx /etc/nginx/conf.d/default.conf && \
     chmod +x /run.sh
 
+
 VOLUME /vol/static
+VOLUME /vol/media
 
 USER nginx
+
+
 
 CMD ["/run.sh"]
