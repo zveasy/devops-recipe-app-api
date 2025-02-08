@@ -12,3 +12,4 @@ variable "contact" {
   description = "Contact email for tagging resources"
   default     = "zveasy@lucidtrades.com"
 }
+

@@ -3,7 +3,7 @@ variable "tf_state_bucket" {
   default     = "devops-app-zcv"
 }
 
-variable "tf_state_lock_variable" {
+variable "tf_state_lock_table" {
   description = "Name of the DynamoDB table for the TF state locking"
   default     = "devops-zcv-lock"
 }
