@@ -12,19 +12,19 @@ resource "aws_iam_access_key" "cd" {
 }
 
 #########################################################
-# Policy for Teraform backend to S3 and DynamoDB access #
+# Policy for Terraform backend to S3 and DynamoDB access #
 #########################################################
 
 data "aws_iam_policy_document" "tf_backend" {
   statement {
     effect    = "Allow"
-    actions   = ["s3:ListBucket"]
+    actions   = ["s3:ListBucket", "s3:GetBucketLocation"]
     resources = ["arn:aws:s3:::${var.tf_state_bucket}"]
   }
 
   statement {
     effect  = "Allow"
-    actions = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"]
+    actions = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject", "s3:HeadObject"]
     resources = [
       "arn:aws:s3:::${var.tf_state_bucket}/tf-state-deploy/*",
       "arn:aws:s3:::${var.tf_state_bucket}/tf-state-deploy-env/*"
@@ -36,7 +36,8 @@ data "aws_iam_policy_document" "tf_backend" {
       "dynamodb:DescribeTable",
       "dynamodb:GetItem",
       "dynamodb:PutItem",
-      "dynamodb:DeleteItem"
+      "dynamodb:DeleteItem",
+      "dynamodb:Scan"
     ]
     resources = ["arn:aws:dynamodb:*:*:table/${var.tf_state_lock_table}"]
   }
@@ -157,4 +158,38 @@ resource "aws_iam_policy" "ec2" {
 resource "aws_iam_user_policy_attachment" "ec2" {
   user       = aws_iam_user.cd.name
   policy_arn = aws_iam_policy.ec2.arn
+}
+
+
+
+#########################
+# Policy for RDS access #
+#########################
+
+data "aws_iam_policy_document" "rds" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "rds:DescribeDBSubnetGroups",
+      "rds:DescribeDBInstances",
+      "rds:CreateDBSubnetGroup",
+      "rds:DeleteDBSubnetGroup",
+      "rds:CreateDBInstance",
+      "rds:DeleteDBInstance",
+      "rds:ListTagsForResource",
+      "rds:ModifyDBInstance"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "rds" {
+  name        = "${aws_iam_user.cd.name}-rds"
+  description = "Allow user to manage RDS resources."
+  policy      = data.aws_iam_policy_document.rds.json
+}
+
+resource "aws_iam_user_policy_attachment" "rds" {
+  user       = aws_iam_user.cd.name
+  policy_arn = aws_iam_policy.rds.arn
 }
