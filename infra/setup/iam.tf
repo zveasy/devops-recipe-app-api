@@ -101,7 +101,7 @@ resource "aws_iam_user_policy_attachment" "ecr" {
 
 
 #########################
-# Policy for EC2 access #
+# Policy for EC2 access2 #
 #########################
 
 data "aws_iam_policy_document" "ec2" {
