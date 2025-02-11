@@ -1,6 +1,13 @@
 version: "3.9"
 
 services:
+  terraform:
+    image: hashicorp/terraform:latest
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    entrypoint: ["terraform"]
+
   app:
     build:
       context: .
