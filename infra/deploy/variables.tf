@@ -13,7 +13,6 @@ variable "contact" {
   default     = "zveasy@lucidtrades.com"
 }
 
-
 variable "db_username" {
   description = "Username for the recipe app api database"
   default     = "recipeapp"

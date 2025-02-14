@@ -7,11 +7,11 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "devops-app-zcv"
+    bucket         = "devops-app-zcv1"
     key            = "tf-state-setup"
     region         = "us-east-1"
     encrypt        = true
-    dynamodb_table = "devops-zcv-lock"
+    dynamodb_table = "devops-zcv-lock1"
   }
 }
 
