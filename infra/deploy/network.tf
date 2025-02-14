@@ -19,7 +19,6 @@ resource "aws_internet_gateway" "main" {
   }
 }
 
-
 ##################################################
 # Public subnets for load balancer public access #
 ##################################################
@@ -83,7 +82,6 @@ resource "aws_route" "public_internet_access_b" {
   gateway_id             = aws_internet_gateway.main.id
 }
 
-
 ############################################
 # Private Subnets for internal access only #
 ############################################
@@ -106,8 +104,6 @@ resource "aws_subnet" "private_b" {
     Name = "${local.prefix}-private-b"
   }
 }
-
-
 
 #########################################################################
 ## Endpoints to allow ECS to access ECR, CloudWatch and Systems Manager #

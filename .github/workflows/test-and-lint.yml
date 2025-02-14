@@ -28,7 +28,7 @@ jobs:
         run: docker compose run --rm app sh -c "flake8"
 
   terraform:
-    name: terraform
+    name: Terraform
     runs-on: ubuntu-22.04
     steps:
       - name: Login to Docker Hub
@@ -41,10 +41,9 @@ jobs:
       - name: Terraform lint
         run: |
           cd infra/
-          docker compose run terraform -chdir=deploy/ init -backend=false
-          docker compose run terraform -chdir=setup/ init -backend=false
-          docker compose run terraform -chdir=setup/ validate
-          docker compose run terraform -chdir=setup/ fmt -check
-          docker compose run terraform -chdir=deploy/ validate
-          docker compose run terraform -chdir=deploy/ fmt -check
-
+          docker compose run --rm terraform -chdir=deploy/ init -backend=false
+          docker compose run --rm terraform -chdir=setup/ init -backend=false
+          docker compose run --rm terraform -chdir=setup/ validate
+          docker compose run --rm terraform -chdir=setup/ fmt -check
+          docker compose run --rm terraform -chdir=deploy/ validate
+          docker compose run --rm terraform -chdir=deploy/ fmt -check
